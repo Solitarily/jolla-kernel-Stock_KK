@@ -455,14 +455,26 @@ config SND_SOC_TPA2028D
 	help
 	  Texas Instruments 3W Mono Class-D Audio Amplifier
 
-config SOUND_CONTROL_HAX_GPL
-	tristate "wcd93xx sound control hax"
-	default y
+config SND_SOC_TPA2028D_DUAL_SPEAKER
+	bool "Audio subsystem TPA2028D DUAL SPEAKER"
+	default n
 	help
-	  FauxSound WCD93xx chipset sound control hacks
+	  Texas Instruments 3W Mono Class-D Audio Amplifier
 
-config SOUND_CONTROL_HAX_3_GPL
-	tristate "new wcd93xx sound control hax"
+config DUAL_SPEAKER
+	bool "Audio subsystem TPA2028D DUAL SPEAKER"
+	default n
+# CONFIG_LGE_AUDIO
+config LGE_AUDIO
 	default y
+	bool "LGE Audio Configuration"
 	help
-	  FauxSound WCD93xx chipset sound control hacks 3.0 for deeper hax
+		LGE AUDIO Configuration
+
+
+#// CONFIG_LGE_AUDIO,  Audience eS325 ALSA SoC Audio driver
+config SND_SOC_ES325_SLIM
+	bool "Audience es325 SLIMBus"
+	default n
+	help
+		Audience es325 Dual Mic Noise Reduction
