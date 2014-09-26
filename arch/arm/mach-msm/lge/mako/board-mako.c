@@ -943,6 +943,8 @@ static int phy_init_seq[] = {
 	-1
 };
 
+#define PMIC_GPIO_DP		27    /* PMIC GPIO for D+ change */
+#define PMIC_GPIO_DP_IRQ	PM8921_GPIO_IRQ(PM8921_IRQ_BASE, PMIC_GPIO_DP)
 #define MSM_MPM_PIN_USB1_OTGSESSVLD     40
 
 static struct msm_otg_platform_data msm_otg_pdata = {
@@ -956,12 +958,35 @@ static struct msm_otg_platform_data msm_otg_pdata = {
 	.mpm_otgsessvld_int     = MSM_MPM_PIN_USB1_OTGSESSVLD,
 };
 
+static struct msm_usb_host_platform_data msm_ehci_host_pdata3 = {
+	.power_budget = 500,
+};
+
 #ifdef CONFIG_USB_EHCI_MSM_HOST4
 static struct msm_usb_host_platform_data msm_ehci_host_pdata4;
 #endif
 
 static void __init apq8064_ehci_host_init(void)
 {
+	if (machine_is_apq8064_liquid() || machine_is_mpq8064_cdp() ||
+		machine_is_mpq8064_hrd() || machine_is_mpq8064_dtv()) {
+		if (machine_is_apq8064_liquid())
+			msm_ehci_host_pdata3.dock_connect_irq =
+					PM8921_MPP_IRQ(PM8921_IRQ_BASE, 9);
+		else
+			msm_ehci_host_pdata3.pmic_gpio_dp_irq =
+							PMIC_GPIO_DP_IRQ;
+
+		apq8064_device_ehci_host3.dev.platform_data =
+				&msm_ehci_host_pdata3;
+		platform_device_register(&apq8064_device_ehci_host3);
+
+#ifdef CONFIG_USB_EHCI_MSM_HOST4
+		apq8064_device_ehci_host4.dev.platform_data =
+				&msm_ehci_host_pdata4;
+		platform_device_register(&apq8064_device_ehci_host4);
+#endif
+	}
 }
 #ifdef CONFIG_SMB349_CHARGER
 static struct smb349_platform_data smb349_data __initdata = {
