@@ -143,7 +143,7 @@ static void lm3530_set_main_current_level(struct i2c_client *client, int level)
 			cal_value = max_brightness;
 
 		lm3530_write_reg(client, 0xA0, cal_value);
-		printk(KERN_INFO "%s() :level is : %d, cal_value is :* %d\n", __func__, level, cal_value);
+		// printk(KERN_INFO "%s() :level is : %d, cal_value is :* %d\n", __func__, level, cal_value);
 	}
 	else {
 		lm3530_write_reg(client, 0x10, 0x00);
@@ -152,7 +152,7 @@ static void lm3530_set_main_current_level(struct i2c_client *client, int level)
 
 	cur_main_lcd_level = cal_value;
 	cur_write_level    = level;
-	pr_info("write_value is : %d, cal_value is : %d\n",cur_write_level, cur_main_lcd_level);
+	// pr_info("write_value is : %d, cal_value is : %d\n",cur_write_level, cur_main_lcd_level);
 	mutex_unlock(&main_lm3530_dev->bl_mutex);
 }
 
